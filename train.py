@@ -8,10 +8,10 @@ Everything below the divider is fixed infrastructure — never touch it.
 # CONFIG — agent modifies this block only
 # ==============================================================
 CONFIG = {
-    "n_estimators"    : 5,
-    "max_depth"       : 2,
+    "n_estimators": 185,
+    "max_depth": 21,
     "min_samples_split": 20,
-    "min_samples_leaf" : 8,
+    "min_samples_leaf": 8
 }
 # ==============================================================
 # FIXED INFRASTRUCTURE — do not modify below this line
