@@ -115,13 +115,17 @@ def propose_next(current_best: dict, log: list) -> tuple[dict, str]:
             )
         )
         mn, mx = BOUNDS[least_tried]
-        mid = (mn + mx) / 2
-        if current_best[least_tried] < mid:
-            new_val = int(mn + (mx - mn) * random.uniform(0.6, 0.9))
-        else:
-            new_val = int(mn + (mx - mn) * random.uniform(0.1, 0.4))
-        new_config = current_best.copy()
-        new_config[least_tried] = new_val
+        # Try up to 5 random jumps — pick one not already in log
+        tried = {json.dumps(e["config"], sort_keys=True) for e in log}
+        for _ in range(5):
+            if current_best[least_tried] < (mn + mx) / 2:
+                new_val = int(mn + (mx - mn) * random.uniform(0.6, 0.9))
+            else:
+                new_val = int(mn + (mx - mn) * random.uniform(0.1, 0.4))
+            new_config = current_best.copy()
+            new_config[least_tried] = new_val
+            if json.dumps(new_config, sort_keys=True) not in tried:
+                break
         return new_config, f"ESCAPE: large jump on {least_tried} ({current_best[least_tried]} → {new_val})"
 
     # Strategy 1 — Exploit recent wins
